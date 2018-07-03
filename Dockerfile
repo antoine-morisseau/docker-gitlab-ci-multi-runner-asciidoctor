@@ -26,6 +26,8 @@ RUN apt-get install -y --no-install-recommends \
         curl \
 		autoconf \
 		automake \
+		asciidoc \
+		asciidoctor \
 		bzip2 \
 		file \
 		g++ \
@@ -53,14 +55,12 @@ RUN apt-get install -y --no-install-recommends \
 		libyaml-dev \
 		make \
 		nodejs \
+		pandoc \
 		patch \
+		wkhtmltopdf \
 		xz-utils \
 		zlib1g-dev
 
-RUN git clone https://github.com/rbenv/rbenv.git ${GITLAB_RUNNER_HOME_DIR}/.rbenv
-RUN git clone https://github.com/rbenv/ruby-build.git ${GITLAB_RUNNER_HOME_DIR}/.rbenv/plugins/ruby-build
-
-RUN echo 'export PATH="$HOME/.rbenv/bin:$PATH"\neval "$(rbenv init -)"' > ${GITLAB_RUNNER_HOME_DIR}/.bashrc
 
 RUN chown -R ${GITLAB_RUNNER_USER}:${GITLAB_RUNNER_USER} ${GITLAB_RUNNER_HOME_DIR}
 
@@ -72,9 +72,9 @@ ENV LANG en_US.UTF-8
 ENV REGISTER_NON_INTERACTIVE=true
 ENV REGISTRATION_TOKEN=
 ENV CI_SERVER_URL=
-ENV RUNNER_NAME=ruby
+ENV RUNNER_NAME=asciidoctor
 ENV RUNNER_EXECUTOR=shell
-ENV RUNNER_TAG_LIST=ruby
+ENV RUNNER_TAG_LIST=asciidoctor
 ENV RUNNER_LIMIT=1
 
 VOLUME ["${GITLAB_RUNNER_DATA_DIR}"]
