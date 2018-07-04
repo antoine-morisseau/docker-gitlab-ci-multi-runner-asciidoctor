@@ -19,6 +19,11 @@ COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod 755 /sbin/entrypoint.sh
 
 RUN apt-get update
+RUN lsb_release -r
+RUN apt-get install -y software-properties-common
+RUN apt-add-repository ppa:brightbox/ruby-ng
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends ruby2.4
 
 # install build essentials
 RUN apt-get install -y --no-install-recommends \
@@ -26,11 +31,11 @@ RUN apt-get install -y --no-install-recommends \
 	automake \
 	asciidoc \
 	bzip2 \
-        curl \
+  curl \
 	file \
 	g++ \
 	gcc \
-        git-core \
+  git-core \
 	imagemagick \
 	libbz2-dev \
 	libc6-dev \
@@ -61,19 +66,12 @@ RUN apt-get install -y --no-install-recommends \
 	wkhtmltopdf \
 	xz-utils \
 	zlib1g-dev
-	
-RUN git clone https://github.com/rbenv/rbenv.git ${GITLAB_RUNNER_HOME_DIR}/.rbenv
-RUN git clone https://github.com/rbenv/ruby-build.git ${GITLAB_RUNNER_HOME_DIR}/.rbenv/plugins/ruby-build
 
-RUN echo 'export PATH="$HOME/.rbenv/bin:$PATH"\neval "$(rbenv init -)"' > ${GITLAB_RUNNER_HOME_DIR}/.bashrc
 
-RUN RBENV_VERSION=2.1.0
-RUN rbenv install -s 2.1.0
-
-RUN rbenv gem install asciidoctor-pdf --pre
-RUN rbenv gem install rouge
-RUN rbenv gem install pygments.rb
-RUN rbenv gem install coderay
+RUN gem install asciidoctor-pdf --pre
+RUN gem install rouge
+RUN gem install pygments.rb
+RUN gem install coderay
 
 RUN chown -R ${GITLAB_RUNNER_USER}:${GITLAB_RUNNER_USER} ${GITLAB_RUNNER_HOME_DIR}
 
