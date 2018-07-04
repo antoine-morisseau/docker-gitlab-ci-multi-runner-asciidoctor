@@ -26,7 +26,6 @@ RUN apt-get install -y --no-install-recommends \
 	automake \
 	asciidoc \
 	bzip2 \
-	build-base \
         curl \
 	file \
 	g++ \
@@ -54,7 +53,6 @@ RUN apt-get install -y --no-install-recommends \
 	libxslt-dev \
 	libyaml-dev \
 	make \
-	openjdk8-jre \
 	py2-pillow \
 	py-setuptools \
 	python2 \
