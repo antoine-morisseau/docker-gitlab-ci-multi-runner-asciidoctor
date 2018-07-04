@@ -53,14 +53,6 @@ RUN apt-get install -y --no-install-recommends \
 	libxslt-dev \
 	libyaml-dev \
 	make \
-	py2-pillow \
-	py-setuptools \
-	python2 \
-	python2-dev \
-	py2-pip \
-	ruby \
-	ruby-dev \
-	ruby-mathematical \
 	ttf-liberation \
 	unzip \
 	nodejs \
@@ -70,40 +62,18 @@ RUN apt-get install -y --no-install-recommends \
 	xz-utils \
 	zlib1g-dev
 	
-ARG asciidoctor_version=1.5.7.1
-ARG asciidoctor_pdf_version=1.5.0.alpha.16
+RUN git clone https://github.com/rbenv/rbenv.git ${GITLAB_RUNNER_HOME_DIR}/.rbenv
+RUN git clone https://github.com/rbenv/ruby-build.git ${GITLAB_RUNNER_HOME_DIR}/.rbenv/plugins/ruby-build
 
-# Installing Ruby Gems needed in the image
-# including asciidoctor itself
-RUN gem install --no-document \
-    "asciidoctor:${ASCIIDOCTOR_VERSION}" \
-    asciidoctor-confluence \
-    asciidoctor-diagram \
-    asciidoctor-epub3:1.5.0.alpha.7 \
-    asciidoctor-mathematical \
-    "asciidoctor-pdf:${ASCIIDOCTOR_PDF_VERSION}" \
-    asciidoctor-revealjs \
-    coderay \
-    epubcheck:3.0.1 \
-    haml \
-    kindlegen:3.0.3 \
-    pygments.rb \
-    rake \
-    rouge \
-    slim \
-    thread_safe \
-    tilt \
+RUN echo 'export PATH="$HOME/.rbenv/bin:$PATH"\neval "$(rbenv init -)"' > ${GITLAB_RUNNER_HOME_DIR}/.bashrc
 
-# Installing Python dependencies for additional
-# functionnalities as diagrams or syntax highligthing
-RUN pip install --upgrade pip \
-  && pip install --no-cache-dir \
-    actdiag \
-    'blockdiag[pdf]' \
-    nwdiag \
-    Pygments \
-    seqdiag \
+RUN RBENV_VERSION=2.1.0
+RUN rbenv install -s 2.1.0
 
+RUN rbenv gem install asciidoctor-pdf --pre
+RUN rbenv gem install rouge
+RUN rbenv gem install pygments.rb
+RUN rbenv gem install coderay
 
 RUN chown -R ${GITLAB_RUNNER_USER}:${GITLAB_RUNNER_USER} ${GITLAB_RUNNER_HOME_DIR}
 
