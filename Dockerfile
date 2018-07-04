@@ -53,6 +53,7 @@ RUN apt-get install -y --no-install-recommends \
 		libxml2-dev \
 		libxslt-dev \
 		libyaml-dev \
+		ruby \
 		make \
 		nodejs \
 		pandoc \
@@ -63,6 +64,11 @@ RUN apt-get install -y --no-install-recommends \
 
 
 RUN chown -R ${GITLAB_RUNNER_USER}:${GITLAB_RUNNER_USER} ${GITLAB_RUNNER_HOME_DIR}
+
+RUN gem install asciidoctor-pdf --pre
+RUN gem install rouge
+RUN gem install pygments.rb
+run gem install coderay
 
 RUN locale-gen en_US.UTF-8
 
