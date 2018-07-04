@@ -22,53 +22,92 @@ RUN apt-get update
 
 # install build essentials
 RUN apt-get install -y --no-install-recommends \
-        git-core \
+	autoconf \
+	automake \
+	asciidoc \
+	bzip2 \
+	build-base \
         curl \
-		autoconf \
-		automake \
-		asciidoc \
-		asciidoctor \
-		bzip2 \
-		file \
-		g++ \
-		gcc \
-		imagemagick \
-		libbz2-dev \
-		libc6-dev \
-		libcurl4-openssl-dev \
-		libevent-dev \
-		libffi-dev \
-		libglib2.0-dev \
-		libjpeg-dev \
-		liblzma-dev \
-		libmagickcore-dev \
-		libmagickwand-dev \
-		libmysqlclient-dev \
-		libncurses-dev \
-		libpq-dev \
-		libreadline-dev \
-		libsqlite3-dev \
-		libssl-dev \
-		libtool \
-		libxml2-dev \
-		libxslt-dev \
-		libyaml-dev \
-		ruby \
-		make \
-		nodejs \
-		pandoc \
-		patch \
-		wkhtmltopdf \
-		xz-utils \
-		zlib1g-dev
+	file \
+	g++ \
+	gcc \
+        git-core \
+	imagemagick \
+	libbz2-dev \
+	libc6-dev \
+	libcurl4-openssl-dev \
+	libevent-dev \
+	libffi-dev \
+	libglib2.0-dev \
+	libjpeg-dev \
+	liblzma-dev \
+	libmagickcore-dev \
+	libmagickwand-dev \
+	libmysqlclient-dev \
+	libncurses-dev \
+	libpq-dev \
+	libreadline-dev \
+	libsqlite3-dev \
+	libssl-dev \
+	libtool \
+	libxml2-dev \
+	libxslt-dev \
+	libyaml-dev \
+	make \
+	openjdk8-jre \
+	py2-pillow \
+	py-setuptools \
+	python2 \
+	python2-dev \
+	py2-pip \
+	ruby \
+	ruby-dev \
+	ruby-mathematical \
+	ttf-liberation \
+	unzip \
+	nodejs \
+	pandoc \
+	patch \
+	wkhtmltopdf \
+	xz-utils \
+	zlib1g-dev
+	
+ARG asciidoctor_version=1.5.7.1
+ARG asciidoctor_pdf_version=1.5.0.alpha.16
+
+# Installing Ruby Gems needed in the image
+# including asciidoctor itself
+RUN gem install --no-document \
+    "asciidoctor:${ASCIIDOCTOR_VERSION}" \
+    asciidoctor-confluence \
+    asciidoctor-diagram \
+    asciidoctor-epub3:1.5.0.alpha.7 \
+    asciidoctor-mathematical \
+    "asciidoctor-pdf:${ASCIIDOCTOR_PDF_VERSION}" \
+    asciidoctor-revealjs \
+    coderay \
+    epubcheck:3.0.1 \
+    haml \
+    kindlegen:3.0.3 \
+    pygments.rb \
+    rake \
+    rouge \
+    slim \
+    thread_safe \
+    tilt \
+
+# Installing Python dependencies for additional
+# functionnalities as diagrams or syntax highligthing
+RUN pip install --upgrade pip \
+  && pip install --no-cache-dir \
+    actdiag \
+    'blockdiag[pdf]' \
+    nwdiag \
+    Pygments \
+    seqdiag \
 
 
 RUN chown -R ${GITLAB_RUNNER_USER}:${GITLAB_RUNNER_USER} ${GITLAB_RUNNER_HOME_DIR}
-
-RUN gem install asciidoctor-pdf --pre
-RUN gem install rouge
-RUN gem install pygments.rb
-run gem install coderay
 
 RUN locale-gen en_US.UTF-8
 
