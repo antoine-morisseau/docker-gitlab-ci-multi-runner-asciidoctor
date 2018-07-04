@@ -20,10 +20,10 @@ RUN chmod 755 /sbin/entrypoint.sh
 
 RUN apt-get update
 RUN lsb_release -r
-RUN apt-get install -y software-properties-common
+RUN apt-get install -y --force-yes --no-install-recommends software-properties-common
 RUN apt-add-repository ppa:brightbox/ruby-ng
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends ruby2.4
+RUN apt-get install -y --force-yes --no-install-recommends ruby2.4
 
 # install build essentials
 RUN apt-get install -y --no-install-recommends \
